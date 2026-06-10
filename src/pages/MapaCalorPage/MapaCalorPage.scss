@@ -1,0 +1,303 @@
+@use '../../styles/partials/shared';
+@use '../../styles/partials/variables' as *;
+@use '../../styles/partials/mixins'    as *;
+
+// controles arriba del mapa
+.mapa-controles {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: $sp-4;
+  margin-bottom: $sp-6;
+  padding: $sp-4 $sp-6;
+  background: $bg-surface;
+  border: 1px solid $border-color;
+  border-radius: $r-lg;
+
+  &__grupo {
+    display: flex;
+    gap: $sp-2;
+  }
+
+  &__hint {
+    font-size: $fs-xs;
+    color: $text-muted;
+  }
+}
+
+.mapa-ctrl-btn {
+  padding: $sp-2 $sp-5;
+  border: 2px solid $border-color;
+  border-radius: $r-pill;
+  background: transparent;
+  font-size: $fs-sm;
+  font-weight: 600;
+  color: $text-secondary;
+  cursor: pointer;
+  transition: all $t-fast;
+
+  &:hover { border-color: $cencosud-rojo; color: $cencosud-rojo; }
+
+  &--activo {
+    background: $cencosud-rojo;
+    border-color: $cencosud-rojo;
+    color: #fff;
+  }
+}
+
+// layout principal: grilla + panel detalle
+.mapa-layout {
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: $sp-6;
+  align-items: start;
+
+  @include tablet { grid-template-columns: 1fr; }
+}
+
+// grilla de sectores
+.mapa-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: $sp-4;
+
+  @include tablet { grid-template-columns: repeat(2, 1fr); }
+  @include mobile { grid-template-columns: 1fr; }
+}
+
+.mapa-sector {
+  &__titulo {
+    font-size: $fs-xs;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: $text-muted;
+    margin-bottom: $sp-3;
+    padding-bottom: $sp-2;
+    border-bottom: 1px solid $border-color;
+  }
+
+  &__zonas {
+    display: flex;
+    flex-direction: column;
+    gap: $sp-3;
+  }
+}
+
+// cada celda del mapa
+.zona-celda {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $sp-1;
+  padding: $sp-4 $sp-3 $sp-3;
+  border: 2px solid transparent;
+  border-radius: $r-lg;
+  cursor: pointer;
+  text-align: center;
+  transition: transform $t-fast, box-shadow $t-fast, border-color $t-fast;
+  width: 100%;
+  overflow: hidden;
+
+  &:hover { transform: translateY(-2px); box-shadow: $shadow-md; }
+
+  &--seleccionada {
+    border-color: $cencosud-negro;
+    box-shadow: $shadow-lg;
+    transform: translateY(-3px);
+  }
+
+  &--caliente {
+    background: rgba($zona-caliente, 0.10);
+    border-color: rgba($zona-caliente, 0.25);
+  }
+  &--templada {
+    background: rgba($zona-templada, 0.10);
+    border-color: rgba($zona-templada, 0.25);
+  }
+  &--fria {
+    background: rgba($zona-fria, 0.08);
+    border-color: rgba($zona-fria, 0.20);
+  }
+
+  &__id {
+    font-size: $fs-xs;
+    font-weight: 700;
+    color: $text-muted;
+    letter-spacing: 0.05em;
+  }
+
+  &__nombre {
+    font-size: $fs-xs;
+    font-weight: 600;
+    color: $text-secondary;
+    line-height: 1.3;
+  }
+
+  &__pct {
+    font-size: $fs-xl;
+    font-weight: 800;
+    color: $text-primary;
+    line-height: 1;
+    margin: $sp-1 0;
+  }
+
+  &__barra {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: $border-color;
+    border-radius: 0 0 $r-lg $r-lg;
+  }
+
+  &__fill {
+    height: 100%;
+    border-radius: inherit;
+    transition: width $t-slow;
+
+    &--caliente { background: $zona-caliente; }
+    &--templada { background: $zona-templada; }
+    &--fria     { background: $zona-fria; }
+  }
+}
+
+// panel lateral de detalle de zona
+.zona-detalle {
+  position: sticky;
+  top: calc(#{$header-h} + #{$sp-4});
+
+  &__vacio {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $sp-4;
+    padding: $sp-10 $sp-6;
+    background: $bg-surface;
+    border: 2px dashed $border-color;
+    border-radius: $r-xl;
+    text-align: center;
+    color: $text-muted;
+
+    span { font-size: 2rem; }
+    p { font-size: $fs-sm; }
+  }
+
+  &__card {
+    background: $bg-surface;
+    border: 1px solid $border-color;
+    border-radius: $r-xl;
+    padding: $sp-6;
+    display: flex;
+    flex-direction: column;
+    gap: $sp-4;
+
+    &--caliente { border-top: 4px solid $zona-caliente; }
+    &--templada { border-top: 4px solid $zona-templada; }
+    &--fria     { border-top: 4px solid $zona-fria; }
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__id {
+    font-size: $fs-xs;
+    font-weight: 700;
+    color: $text-muted;
+    letter-spacing: 0.1em;
+  }
+
+  &__nombre {
+    font-size: $fs-lg;
+    font-weight: 700;
+    color: $text-primary;
+    line-height: 1.2;
+  }
+
+  &__desc {
+    font-size: $fs-sm;
+    color: $text-secondary;
+    line-height: 1.6;
+  }
+
+  &__metricas {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: $sp-3;
+  }
+
+  &__metrica {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: $sp-1;
+    padding: $sp-3;
+    background: $bg-base;
+    border-radius: $r-md;
+
+    strong { font-size: $fs-lg; font-weight: 800; color: $text-primary; }
+    span   { font-size: $fs-xs; color: $text-muted; }
+  }
+
+  &__recomendacion {
+    padding: $sp-3 $sp-4;
+    background: rgba($cencosud-verde, 0.06);
+    border-left: 3px solid $cencosud-verde;
+    border-radius: 0 $r-md $r-md 0;
+    font-size: $fs-sm;
+
+    strong { color: $cencosud-verde; display: block; margin-bottom: $sp-1; }
+    p { color: $text-secondary; line-height: 1.5; }
+  }
+
+  &__cerrar {
+    align-self: flex-start;
+    padding: $sp-2 $sp-4;
+    border: 1px solid $border-color;
+    border-radius: $r-pill;
+    background: transparent;
+    font-size: $fs-xs;
+    color: $text-muted;
+    cursor: pointer;
+    transition: all $t-fast;
+    &:hover { border-color: $cencosud-rojo; color: $cencosud-rojo; }
+  }
+}
+
+// leyenda pie de página del mapa
+.mapa-leyenda-footer {
+  display: flex;
+  gap: $sp-6;
+  flex-wrap: wrap;
+  margin-top: $sp-8;
+  padding: $sp-4 $sp-6;
+  background: $bg-surface;
+  border: 1px solid $border-color;
+  border-radius: $r-lg;
+  font-size: $fs-sm;
+  color: $text-secondary;
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: $sp-3;
+  }
+
+  &__color {
+    display: inline-block;
+    width: 32px;
+    height: 12px;
+    border-radius: $r-sm;
+
+    &--caliente { background: linear-gradient(90deg, rgba($zona-caliente,0.3), $zona-caliente); }
+    &--templada { background: linear-gradient(90deg, rgba($zona-templada,0.3), $zona-templada); }
+    &--fria     { background: linear-gradient(90deg, rgba($zona-fria,0.3), $zona-fria); }
+  }
+}

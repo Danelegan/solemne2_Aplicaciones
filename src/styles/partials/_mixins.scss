@@ -1,0 +1,155 @@
+// _mixins.scss
+// Mixins reutilizables — VCM Cencosud
+
+@use 'variables' as *;
+
+// ─── Media Queries ────────────────────────────────────────────────────────────
+@mixin mobile {
+  @media (max-width: #{$bp-mobile}) { @content; }
+}
+@mixin tablet {
+  @media (min-width: 768px) and (max-width: #{$bp-tablet}) { @content; }
+}
+@mixin tablet-down {
+  @media (max-width: #{$bp-tablet}) { @content; }
+}
+@mixin desktop {
+  @media (min-width: 1024px) { @content; }
+}
+
+// ─── Botones ──────────────────────────────────────────────────────────────────
+@mixin btn-base {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: $sp-2;
+  padding: $sp-3 $sp-6;
+  border: none;
+  border-radius: $r-md;
+  font-family: $font-body;
+  font-size: $fs-sm;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: all $t-normal;
+
+  &:focus-visible {
+    outline: 3px solid $cencosud-rojo;
+    outline-offset: 3px;
+  }
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+}
+
+@mixin btn-primary {
+  @include btn-base;
+  background: $cencosud-rojo;
+  color: $text-on-rojo;
+  &:hover:not(:disabled) {
+    background: $cencosud-rojo-osc;
+    box-shadow: 0 4px 14px rgba($cencosud-rojo, 0.40);
+    transform: translateY(-1px);
+  }
+  &:active:not(:disabled) { transform: translateY(0); }
+}
+
+@mixin btn-secondary {
+  @include btn-base;
+  background: transparent;
+  color: $cencosud-rojo;
+  border: 2px solid $cencosud-rojo;
+  &:hover:not(:disabled) {
+    background: rgba($cencosud-rojo, 0.06);
+    box-shadow: 0 4px 14px rgba($cencosud-rojo, 0.15);
+  }
+}
+
+@mixin btn-verde {
+  @include btn-base;
+  background: $cencosud-verde;
+  color: $text-on-verde;
+  &:hover:not(:disabled) {
+    background: $cencosud-verde-osc;
+    box-shadow: 0 4px 14px rgba($cencosud-verde, 0.35);
+    transform: translateY(-1px);
+  }
+}
+
+// ─── Tarjetas ─────────────────────────────────────────────────────────────────
+@mixin card {
+  background: $bg-surface;
+  border: 1px solid $border-color;
+  border-radius: $r-lg;
+  box-shadow: $shadow-card;
+}
+
+@mixin card-hover {
+  @include card;
+  transition: transform $t-normal, box-shadow $t-normal, border-color $t-normal;
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: $shadow-md;
+  }
+}
+
+// ─── Inputs de formulario ─────────────────────────────────────────────────────
+@mixin input-base {
+  width: 100%;
+  padding: $sp-3 $sp-4;
+  background: $bg-surface;
+  border: 1.5px solid $border-color;
+  border-radius: $r-md;
+  font-family: $font-body;
+  font-size: $fs-md;
+  color: $text-primary;
+  transition: border-color $t-fast, box-shadow $t-fast;
+
+  &::placeholder { color: $text-faint; }
+
+  &:focus {
+    outline: none;
+    border-color: $cencosud-rojo;
+    box-shadow: 0 0 0 3px rgba($cencosud-rojo, 0.12);
+  }
+}
+
+// ─── Badge de zona de calor ───────────────────────────────────────────────────
+@mixin badge-calor($color) {
+  display: inline-flex;
+  align-items: center;
+  gap: $sp-1;
+  padding: 2px $sp-3;
+  background: rgba($color, 0.12);
+  color: darken($color, 10%);
+  border: 1px solid rgba($color, 0.35);
+  border-radius: $r-pill;
+  font-size: $fs-xs;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+// ─── Flex helpers ─────────────────────────────────────────────────────────────
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+// ─── Truncar texto ────────────────────────────────────────────────────────────
+@mixin truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

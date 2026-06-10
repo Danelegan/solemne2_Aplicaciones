@@ -1,0 +1,262 @@
+@use '../../styles/partials/shared';
+@use '../../styles/partials/variables' as *;
+@use '../../styles/partials/mixins'    as *;
+
+// filtros de búsqueda y tipo
+.zonas-filtros {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: $sp-4;
+  margin-bottom: $sp-6;
+  padding: $sp-4 $sp-6;
+  background: $bg-surface;
+  border: 1px solid $border-color;
+  border-radius: $r-lg;
+
+  &__busqueda {
+    flex: 1;
+    min-width: 200px;
+    padding: $sp-2 $sp-4;
+    border: 1px solid $border-color;
+    border-radius: $r-pill;
+    font-size: $fs-sm;
+    color: $text-primary;
+    background: $bg-base;
+    transition: border-color $t-fast;
+
+    &:focus { outline: none; border-color: $cencosud-rojo; }
+  }
+
+  &__grupo {
+    display: flex;
+    align-items: center;
+    gap: $sp-2;
+    flex-wrap: wrap;
+  }
+
+  &__label {
+    font-size: $fs-xs;
+    font-weight: 700;
+    color: $text-muted;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  &__resultado {
+    font-size: $fs-xs;
+    color: $text-muted;
+    margin-left: auto;
+  }
+}
+
+.filtro-btn {
+  padding: $sp-1 $sp-3;
+  border: 1px solid $border-color;
+  border-radius: $r-pill;
+  background: transparent;
+  font-size: $fs-xs;
+  font-weight: 600;
+  color: $text-secondary;
+  cursor: pointer;
+  transition: all $t-fast;
+
+  &:hover { border-color: $cencosud-rojo; color: $cencosud-rojo; }
+
+  &--activo {
+    background: $cencosud-negro;
+    border-color: $cencosud-negro;
+    color: #fff;
+  }
+
+  // colores especiales para los tipos de zona
+  &--caliente.filtro-btn--activo { background: $zona-caliente; border-color: $zona-caliente; }
+  &--templada.filtro-btn--activo { background: $zona-templada; border-color: $zona-templada; }
+  &--fria.filtro-btn--activo     { background: $zona-fria;     border-color: $zona-fria; }
+}
+
+// tabla de zonas
+.zonas-tabla-wrap {
+  overflow-x: auto;
+  border: 1px solid $border-color;
+  border-radius: $r-lg;
+  margin-bottom: $sp-10;
+}
+
+.zonas-tabla {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: $fs-sm;
+
+  thead {
+    background: $bg-base;
+    th {
+      padding: $sp-3 $sp-4;
+      text-align: left;
+      font-size: $fs-xs;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: $text-muted;
+      border-bottom: 1px solid $border-color;
+      white-space: nowrap;
+    }
+  }
+
+  tbody tr {
+    border-bottom: 1px solid $border-color;
+    transition: background $t-fast;
+    &:last-child { border-bottom: none; }
+    &:hover { background: $bg-base; }
+  }
+
+  td {
+    padding: $sp-3 $sp-4;
+    color: $text-secondary;
+    vertical-align: middle;
+  }
+
+  &__id span {
+    font-size: $fs-xs;
+    font-weight: 700;
+    color: $text-muted;
+    letter-spacing: 0.05em;
+  }
+
+  &__nombre {
+    strong { display: block; color: $text-primary; font-weight: 600; margin-bottom: $sp-1; }
+    p { font-size: $fs-xs; color: $text-muted; max-width: 240px; line-height: 1.4; }
+  }
+
+  &__num {
+    font-weight: 700;
+    color: $text-primary;
+    font-variant-numeric: tabular-nums;
+  }
+
+  &__ocupacion {
+    display: flex;
+    align-items: center;
+    gap: $sp-2;
+    span { font-size: $fs-xs; font-weight: 600; color: $text-muted; min-width: 32px; }
+  }
+
+  &__tiempo {
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  &__rec {
+    font-size: $fs-xs;
+    color: $text-muted;
+    max-width: 220px;
+    line-height: 1.4;
+  }
+
+  // tinte de fila según tipo
+  &__fila--caliente { background: rgba($zona-caliente, 0.02); }
+  &__fila--fria     { background: rgba($zona-fria, 0.02); }
+}
+
+// mini barra de progreso en la tabla
+.mini-barra {
+  width: 60px;
+  height: 6px;
+  background: $border-color;
+  border-radius: $r-pill;
+  overflow: hidden;
+  flex-shrink: 0;
+
+  &__fill {
+    height: 100%;
+    border-radius: inherit;
+    &--caliente { background: $zona-caliente; }
+    &--templada { background: $zona-templada; }
+    &--fria     { background: $zona-fria; }
+  }
+}
+
+.sector-badge {
+  display: inline-block;
+  padding: 2px $sp-2;
+  background: $bg-base;
+  border: 1px solid $border-color;
+  border-radius: $r-sm;
+  font-size: $fs-xs;
+  font-weight: 600;
+  color: $text-secondary;
+}
+
+// cuando no hay resultados
+.zonas-vacio {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $sp-4;
+  padding: $sp-12;
+  text-align: center;
+  color: $text-muted;
+
+  button {
+    padding: $sp-2 $sp-6;
+    border: 1px solid $border-color;
+    border-radius: $r-pill;
+    background: transparent;
+    cursor: pointer;
+    font-size: $fs-sm;
+    transition: all $t-fast;
+    &:hover { border-color: $cencosud-rojo; color: $cencosud-rojo; }
+  }
+}
+
+// resumen por sector al fondo
+.zonas-resumen-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: $sp-4;
+  margin-top: $sp-6;
+
+  @include tablet { grid-template-columns: repeat(2, 1fr); }
+  @include mobile { grid-template-columns: 1fr; }
+}
+
+.sector-card {
+  padding: $sp-6;
+  background: $bg-surface;
+  border: 1px solid $border-color;
+  border-radius: $r-xl;
+  text-align: center;
+
+  &--caliente { border-top: 3px solid $zona-caliente; }
+  &--templada { border-top: 3px solid $zona-templada; }
+  &--fria     { border-top: 3px solid $zona-fria; }
+
+  &__titulo {
+    font-size: $fs-xs;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: $text-muted;
+    margin-bottom: $sp-2;
+  }
+
+  &__zonas {
+    font-size: $fs-xs;
+    color: $text-muted;
+    margin-bottom: $sp-4;
+  }
+
+  &__total {
+    display: block;
+    font-size: $fs-2xl;
+    font-weight: 800;
+    color: $text-primary;
+    line-height: 1;
+    margin-bottom: $sp-1;
+  }
+
+  &__label {
+    font-size: $fs-xs;
+    color: $text-muted;
+  }
+}

@@ -1,0 +1,86 @@
+// Mensaje.scss
+
+@use '../../styles/partials/variables' as *;
+@use '../../styles/partials/mixins'    as *;
+
+.mensaje {
+  display: flex;
+  align-items: flex-start;
+  gap: $sp-4;
+  padding: $sp-4 $sp-5;
+  border-radius: $r-lg;
+  border: 1.5px solid;
+  animation: msg-in $t-slow ease;
+
+  // ── Éxito ──────────────────────────────────────────────────────────────────
+  &--exito {
+    background: rgba($cencosud-verde, 0.07);
+    border-color: rgba($cencosud-verde, 0.35);
+    color: darken($cencosud-verde, 5%);
+
+    .mensaje__icono {
+      background: rgba($cencosud-verde, 0.15);
+      color: $cencosud-verde;
+    }
+  }
+
+  // ── Error ──────────────────────────────────────────────────────────────────
+  &--error {
+    background: rgba($cencosud-rojo, 0.06);
+    border-color: rgba($cencosud-rojo, 0.35);
+    color: $cencosud-rojo-osc;
+
+    .mensaje__icono {
+      background: rgba($cencosud-rojo, 0.12);
+      color: $cencosud-rojo;
+    }
+  }
+
+  // ── Ícono ──────────────────────────────────────────────────────────────────
+  &__icono {
+    @include flex-center;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    font-size: $fs-md;
+    font-weight: 800;
+    flex-shrink: 0;
+    line-height: 1;
+  }
+
+  // ── Texto ──────────────────────────────────────────────────────────────────
+  &__texto {
+    flex: 1;
+    font-size: $fs-md;
+    font-weight: 500;
+    line-height: 1.5;
+    padding-top: $sp-1;
+  }
+
+  // ── Botón cerrar ───────────────────────────────────────────────────────────
+  &__cerrar {
+    @include flex-center;
+    width: 26px;
+    height: 26px;
+    background: transparent;
+    border: none;
+    border-radius: $r-sm;
+    font-size: $fs-xl;
+    cursor: pointer;
+    opacity: 0.5;
+    color: inherit;
+    transition: opacity $t-fast, background $t-fast;
+    flex-shrink: 0;
+    line-height: 1;
+
+    &:hover { opacity: 1; background: rgba(0,0,0,0.06); }
+    &:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+  }
+
+  @include mobile { padding: $sp-3 $sp-4; gap: $sp-3; }
+}
+
+@keyframes msg-in {
+  from { opacity: 0; transform: translateY(-6px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}

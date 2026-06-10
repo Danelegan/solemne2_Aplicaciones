@@ -1,0 +1,48 @@
+// _reset.scss — Base y reset
+
+@use 'variables' as *;
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { font-size: 16px; scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+body {
+  font-family: $font-body;
+  font-size: $fs-md;
+  color: $text-primary;
+  background: $bg-base;
+  line-height: 1.6;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+img, picture, video, svg { display: block; max-width: 100%; }
+input, button, textarea, select { font: inherit; }
+ul, ol { list-style: none; }
+a { color: $cencosud-rojo; text-decoration: none; transition: color 0.15s ease; &:hover { color: $cencosud-rojo-osc; } }
+p, h1, h2, h3, h4, h5, h6 { overflow-wrap: break-word; }
+
+:focus-visible {
+  outline: 3px solid $cencosud-rojo;
+  outline-offset: 3px;
+  border-radius: $r-sm;
+}
+
+// Skip link de accesibilidad
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: $sp-4;
+  padding: $sp-2 $sp-4;
+  background: $cencosud-rojo;
+  color: #fff;
+  font-weight: 700;
+  border-radius: $r-md;
+  z-index: 9999;
+  &:focus { top: $sp-3; }
+}
+
+// Scrollbar
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: $bg-base; }
+::-webkit-scrollbar-thumb { background: $cencosud-gris-med; border-radius: $r-pill; &:hover { background: $cencosud-gris; } }

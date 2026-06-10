@@ -1,0 +1,238 @@
+@use '../../styles/partials/shared';
+@use '../../styles/partials/variables' as *;
+@use '../../styles/partials/mixins'    as *;
+
+// selector de período
+.reportes-periodo {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: $sp-4;
+  margin-bottom: $sp-6;
+  padding: $sp-4 $sp-6;
+  background: $bg-surface;
+  border: 1px solid $border-color;
+  border-radius: $r-lg;
+
+  &__label {
+    font-size: $fs-sm;
+    font-weight: 600;
+    color: $text-secondary;
+  }
+
+  &__opciones {
+    display: flex;
+    gap: $sp-2;
+  }
+}
+
+.periodo-btn {
+  padding: $sp-2 $sp-5;
+  border: 1px solid $border-color;
+  border-radius: $r-pill;
+  background: transparent;
+  font-size: $fs-sm;
+  font-weight: 600;
+  color: $text-secondary;
+  cursor: pointer;
+  transition: all $t-fast;
+
+  &:hover { border-color: $cencosud-rojo; color: $cencosud-rojo; }
+  &--activo {
+    background: $cencosud-rojo;
+    border-color: $cencosud-rojo;
+    color: #fff;
+  }
+}
+
+.exportar-btn {
+  margin-left: auto;
+  padding: $sp-2 $sp-5;
+  border: 1px solid $border-color;
+  border-radius: $r-pill;
+  background: transparent;
+  font-size: $fs-sm;
+  font-weight: 600;
+  color: $text-muted;
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+// grid de tarjetas de resumen
+.reporte-resumen-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: $sp-4;
+  margin-bottom: $sp-10;
+
+  @include tablet { grid-template-columns: 1fr 1fr; }
+  @include mobile { grid-template-columns: 1fr; }
+}
+
+.reporte-card {
+  padding: $sp-6;
+  background: $bg-surface;
+  border: 1px solid $border-color;
+  border-radius: $r-xl;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: $sp-2;
+
+  &--principal {
+    border-top: 4px solid $cencosud-rojo;
+    grid-column: span 1;
+  }
+
+  &__icono { font-size: 1.5rem; }
+
+  &__numero {
+    font-size: $fs-3xl;
+    font-weight: 800;
+    color: $text-primary;
+    line-height: 1;
+  }
+
+  &__label {
+    font-size: $fs-sm;
+    font-weight: 600;
+    color: $text-secondary;
+  }
+
+  &__meta, &__periodo {
+    font-size: $fs-xs;
+    color: $text-muted;
+  }
+}
+
+// tabla del ranking de reportes
+.reporte-ranking {
+  margin-bottom: $sp-8;
+}
+
+.reporte-tabla-wrap {
+  overflow-x: auto;
+  border: 1px solid $border-color;
+  border-radius: $r-lg;
+  margin-top: $sp-6;
+}
+
+.reporte-tabla {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: $fs-sm;
+
+  thead {
+    background: $bg-base;
+    th {
+      padding: $sp-3 $sp-4;
+      text-align: left;
+      font-size: $fs-xs;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: $text-muted;
+      border-bottom: 1px solid $border-color;
+      white-space: nowrap;
+    }
+  }
+
+  tbody tr {
+    border-bottom: 1px solid $border-color;
+    transition: background $t-fast;
+    &:last-child { border-bottom: none; }
+    &:hover { background: $bg-base; }
+  }
+
+  td {
+    padding: $sp-3 $sp-4;
+    color: $text-secondary;
+    vertical-align: middle;
+  }
+
+  &__pos { text-align: center; }
+
+  &__zona {
+    span { display: block; font-size: $fs-xs; color: $text-muted; }
+    strong { font-weight: 600; color: $text-primary; }
+  }
+
+  &__num {
+    font-weight: 700;
+    color: $text-primary;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+// badge de posición con colores para el podio
+.pos-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: $bg-base;
+  border: 1px solid $border-color;
+  font-size: $fs-xs;
+  font-weight: 700;
+  color: $text-muted;
+
+  &--top1 { background: #FEF3C7; border-color: #F59E0B; color: #92400E; }
+  &--top2 { background: #F1F5F9; border-color: #94A3B8; color: #475569; }
+  &--top3 { background: #FEF0E8; border-color: #FB923C; color: #9A3412; }
+}
+
+// porcentaje con mini barra
+.reporte-pct {
+  display: flex;
+  align-items: center;
+  gap: $sp-2;
+  span { font-size: $fs-xs; font-weight: 600; color: $text-muted; min-width: 32px; }
+}
+
+// mini barra (reutilizada de zonas)
+.mini-barra {
+  width: 60px;
+  height: 6px;
+  background: $border-color;
+  border-radius: $r-pill;
+  overflow: hidden;
+  flex-shrink: 0;
+
+  &__fill {
+    height: 100%;
+    border-radius: inherit;
+    &--caliente { background: $zona-caliente; }
+    &--templada { background: $zona-templada; }
+    &--fria     { background: $zona-fria; }
+  }
+}
+
+.sector-badge {
+  display: inline-block;
+  padding: 2px $sp-2;
+  background: $bg-base;
+  border: 1px solid $border-color;
+  border-radius: $r-sm;
+  font-size: $fs-xs;
+  font-weight: 600;
+  color: $text-secondary;
+}
+
+// nota de datos simulados al final
+.reporte-nota {
+  display: flex;
+  align-items: flex-start;
+  gap: $sp-3;
+  padding: $sp-4 $sp-5;
+  background: rgba($cencosud-verde, 0.05);
+  border: 1px solid rgba($cencosud-verde, 0.15);
+  border-radius: $r-lg;
+  font-size: $fs-xs;
+  color: $text-muted;
+  line-height: 1.6;
+
+  span { flex-shrink: 0; font-size: 1rem; color: $cencosud-verde; }
+}

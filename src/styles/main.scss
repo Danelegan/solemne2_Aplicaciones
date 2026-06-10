@@ -1,0 +1,8 @@
+// estilos globales del sistema VCM
+// importo los partiales en orden: reset primero, luego variables/mixins, luego layout
+
+@use 'partials/reset';
+@use 'partials/variables' as *;
+@use 'partials/mixins' as *;
+@use 'partials/shared';
+@use 'partials/layout';

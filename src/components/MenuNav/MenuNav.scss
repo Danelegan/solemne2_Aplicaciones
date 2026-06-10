@@ -1,0 +1,156 @@
+// MenuNav.scss
+
+@use '../../styles/partials/variables' as *;
+@use '../../styles/partials/mixins'    as *;
+
+.menu-nav {
+  position: relative;
+
+  // ── Lista principal — Flexbox obligatorio ──────────────────────────────────
+  &__lista {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: $sp-1;
+    flex-wrap: nowrap;
+  }
+
+  &__item {
+    flex-shrink: 0;
+  }
+
+  // ── Enlace ─────────────────────────────────────────────────────────────────
+  &__link {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    padding: $sp-2 $sp-4;
+    border-radius: $r-md;
+    font-size: $fs-sm;
+    font-weight: 600;
+    color: $text-secondary;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+    transition: color $t-fast, background $t-fast;
+
+    // Barra de subrayado animada
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 50%;
+      right: 50%;
+      height: 3px;
+      background: $cencosud-rojo;
+      border-radius: $r-pill;
+      transition: left $t-normal, right $t-normal;
+    }
+
+    &:hover {
+      color: $cencosud-rojo;
+      background: rgba($cencosud-rojo, 0.05);
+      &::after { left: $sp-4; right: $sp-4; }
+    }
+
+    // Estado activo
+    &--activo {
+      color: $cencosud-rojo;
+      font-weight: 700;
+      &::after { left: $sp-4; right: $sp-4; }
+    }
+  }
+
+  // ── Toggle hamburguesa (oculto en desktop) ─────────────────────────────────
+  &__toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    width: 40px;
+    height: 40px;
+    background: transparent;
+    border: 2px solid $border-color;
+    border-radius: $r-md;
+    cursor: pointer;
+    transition: border-color $t-fast;
+
+    span {
+      display: block;
+      width: 20px;
+      height: 2px;
+      background: $text-secondary;
+      border-radius: $r-pill;
+      transition: all $t-normal;
+      transform-origin: center;
+    }
+
+    &:hover { border-color: $cencosud-rojo; span { background: $cencosud-rojo; } }
+
+    // Transformación a "X"
+    &--open {
+      border-color: $cencosud-rojo;
+      span:nth-child(1) { transform: translateY(7px) rotate(45deg);  background: $cencosud-rojo; }
+      span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+      span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); background: $cencosud-rojo; }
+    }
+  }
+
+  // ── Tablet: compactar ──────────────────────────────────────────────────────
+  @include tablet {
+    &__link {
+      padding: $sp-2 $sp-3;
+      font-size: $fs-xs;
+    }
+  }
+
+  // ── Móvil: menú vertical desplegable ──────────────────────────────────────
+  @include mobile {
+    &__toggle {
+      display: flex;
+    }
+
+    &__lista {
+      display: none;
+      position: absolute;
+      top: calc(100% + #{$sp-3});
+      right: 0;
+      flex-direction: column;    // Disposición VERTICAL en móvil
+      align-items: stretch;
+      width: 220px;
+      background: $bg-surface;
+      border: 1px solid $border-color;
+      border-top: 3px solid $cencosud-rojo;
+      border-radius: 0 0 $r-lg $r-lg;
+      padding: $sp-3;
+      box-shadow: $shadow-lg;
+      z-index: 300;
+      gap: $sp-1;
+
+      &--abierta {
+        display: flex;
+        animation: slide-down $t-normal ease;
+      }
+    }
+
+    &__link {
+      width: 100%;
+      padding: $sp-3 $sp-4;
+      font-size: $fs-md;
+      border-radius: $r-md;
+
+      &::after { display: none; }
+      &--activo {
+        background: rgba($cencosud-rojo, 0.08);
+        border-left: 3px solid $cencosud-rojo;
+        padding-left: $sp-3;
+      }
+    }
+  }
+}
+
+@keyframes slide-down {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}

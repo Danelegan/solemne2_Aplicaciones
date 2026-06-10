@@ -1,0 +1,115 @@
+// estilos compartidos entre páginas
+// todo lo que se repite en más de una página va acá
+
+@use 'variables' as *;
+@use 'mixins' as *;
+
+// títulos de sección
+.seccion-titulo {
+  font-family: $font-display;
+  font-size: $fs-2xl;
+  font-weight: 800;
+  color: $text-primary;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  margin-bottom: $sp-2;
+
+  &--alerta { color: $cencosud-rojo; }
+}
+
+.seccion-subtitulo {
+  font-size: $fs-sm;
+  color: $text-muted;
+  margin-bottom: $sp-8;
+}
+
+// badges de tipo de zona (caliente/templada/fría)
+// el mixin badge-calor está en _mixins.scss
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: $sp-1;
+  padding: 2px $sp-3;
+  border-radius: $r-pill;
+  font-size: $fs-xs;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+
+  &--caliente { background: rgba($zona-caliente, 0.12); color: darken($zona-caliente, 5%); }
+  &--templada { background: rgba($zona-templada, 0.15); color: darken($zona-templada, 25%); }
+  &--fria     { background: rgba($zona-fria, 0.10);     color: darken($zona-fria, 15%); }
+}
+
+// badge de sector (A, B, C, D)
+.sector-badge {
+  display: inline-block;
+  padding: 2px $sp-2;
+  background: $bg-base;
+  border: 1px solid $border-color;
+  border-radius: $r-sm;
+  font-size: $fs-xs;
+  font-weight: 600;
+  color: $text-secondary;
+}
+
+// encabezado de página (lo usan mapa, zonas y reportes)
+.page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: $sp-4;
+  margin-bottom: $sp-8;
+  padding-bottom: $sp-6;
+  border-bottom: 1px solid $border-color;
+
+  &__contenido { flex: 1; }
+
+  &__h1 {
+    font-family: $font-display;
+    font-size: $fs-3xl;
+    font-weight: 800;
+    color: $text-primary;
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    line-height: 1.1;
+    margin-bottom: $sp-2;
+  }
+
+  &__desc {
+    font-size: $fs-md;
+    color: $text-secondary;
+    line-height: 1.6;
+    max-width: 560px;
+  }
+
+  &__meta {
+    display: flex;
+    align-items: center;
+    gap: $sp-2;
+    flex-wrap: wrap;
+    flex-shrink: 0;
+  }
+}
+
+// badge de estado del sistema
+.meta-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: $sp-2;
+  padding: $sp-1 $sp-3;
+  background: $bg-base;
+  border: 1px solid $border-color;
+  border-radius: $r-pill;
+  font-size: $fs-xs;
+  font-weight: 600;
+  color: $text-secondary;
+
+  &--live {
+    background: rgba($cencosud-verde, 0.08);
+    border-color: rgba($cencosud-verde, 0.2);
+    color: $cencosud-verde;
+  }
+}

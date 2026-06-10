@@ -1,0 +1,536 @@
+// Homepage.scss — VCM Cencosud · Mapa de Calor
+
+@use '../../styles/partials/variables' as *;
+@use '../../styles/partials/mixins'    as *;
+
+// ── Utilidades de sección ─────────────────────────────────────────────────────
+.seccion-titulo {
+  font-family: $font-display;
+  font-size: $fs-3xl;
+  font-weight: 800;
+  color: $text-primary;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  margin-bottom: $sp-2;
+
+  &--alerta { color: $cencosud-rojo; }
+  @include mobile { font-size: $fs-2xl; }
+}
+
+.seccion-subtitulo {
+  font-size: $fs-sm;
+  color: $text-muted;
+  margin-bottom: $sp-8;
+  @include mobile { margin-bottom: $sp-5; }
+}
+
+// ── HERO ──────────────────────────────────────────────────────────────────────
+.hero {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $sp-12;
+  align-items: center;
+  padding: $sp-12 0 $sp-16;
+
+  &__eyebrow {
+    display: inline-block;
+    font-size: $fs-xs;
+    font-weight: 700;
+    color: $cencosud-rojo;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    background: rgba($cencosud-rojo, 0.07);
+    border: 1px solid rgba($cencosud-rojo, 0.2);
+    border-radius: $r-pill;
+    padding: $sp-1 $sp-4;
+    margin-bottom: $sp-4;
+  }
+
+  &__h1 {
+    font-family: $font-display;
+    font-size: $fs-5xl;
+    font-weight: 800;
+    color: $text-primary;
+    line-height: 1.0;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    margin-bottom: $sp-5;
+  }
+
+  &__acento {
+    color: $cencosud-rojo;
+    display: block;
+  }
+
+  &__desc {
+    font-size: $fs-lg;
+    color: $text-muted;
+    line-height: 1.7;
+    max-width: 480px;
+    margin-bottom: $sp-8;
+  }
+
+  &__ctas {
+    display: flex;
+    gap: $sp-4;
+    flex-wrap: wrap;
+    margin-bottom: $sp-6;
+  }
+
+  &__cta {
+    &--primario  { @include btn-primary; }
+    &--secundario { @include btn-secondary; }
+  }
+
+  &__actualizacion {
+    display: flex;
+    align-items: center;
+    gap: $sp-2;
+    font-size: $fs-xs;
+    color: $text-muted;
+  }
+
+  &__dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: $cencosud-verde;
+    animation: pulse-anim 1.8s ease-in-out infinite;
+  }
+
+  // Lado visual
+  &__visual {
+    @include flex-center;
+  }
+
+  @include tablet {
+    grid-template-columns: 1fr;
+    gap: $sp-8;
+    padding: $sp-8 0;
+    &__h1 { font-size: $fs-4xl; }
+    &__desc { font-size: $fs-md; }
+  }
+
+  @include mobile {
+    grid-template-columns: 1fr;
+    gap: $sp-6;
+    padding: $sp-6 0;
+    &__h1 { font-size: $fs-3xl; }
+    &__visual { display: none; }  // ocultar mapa demo en móvil
+    &__ctas { flex-direction: column; }
+    &__cta { width: 100%; justify-content: center; }
+  }
+}
+
+// Mapa demo decorativo
+.mapa-demo {
+  @include card;
+  padding: $sp-5;
+  width: 100%;
+  max-width: 380px;
+  box-shadow: $shadow-lg;
+
+  &__titulo {
+    font-size: $fs-xs;
+    font-weight: 700;
+    color: $text-muted;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: $sp-4;
+    text-align: center;
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: $sp-2;
+    margin-bottom: $sp-4;
+  }
+
+  &__leyenda {
+    display: flex;
+    justify-content: center;
+    gap: $sp-3;
+    flex-wrap: wrap;
+  }
+}
+
+.celda {
+  aspect-ratio: 1;
+  border-radius: $r-md;
+  @include flex-center;
+  font-size: $fs-xs;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  cursor: default;
+  transition: transform $t-fast;
+  &:hover { transform: scale(1.06); }
+
+  &--caliente {
+    background: linear-gradient(135deg, #F97316, $zona-caliente);
+    color: #fff;
+    box-shadow: 0 4px 12px rgba($zona-caliente, 0.4);
+  }
+  &--templada {
+    background: linear-gradient(135deg, #FDE68A, $zona-templada);
+    color: #92400E;
+    box-shadow: 0 4px 12px rgba($zona-templada, 0.3);
+  }
+  &--fria {
+    background: linear-gradient(135deg, #BFDBFE, $zona-fria);
+    color: #1E3A8A;
+    box-shadow: 0 4px 12px rgba($zona-fria, 0.25);
+  }
+}
+
+.md-lnda {
+  font-size: $fs-xs;
+  font-weight: 700;
+  padding: 2px $sp-3;
+  border-radius: $r-pill;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+
+  &--cal { background: rgba($zona-caliente, 0.12); color: $zona-caliente; }
+  &--tem { background: rgba($zona-templada, 0.12); color: darken($zona-templada, 15%); }
+  &--fri { background: rgba($zona-fria, 0.12);     color: $zona-fria; }
+}
+
+// ── ESTADÍSTICAS — CSS Grid ────────────────────────────────────────────────────
+.estadisticas {
+  margin-bottom: $sp-16;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: $sp-5;
+
+  @include tablet { grid-template-columns: repeat(3, 1fr); gap: $sp-4; }
+  @include mobile { grid-template-columns: repeat(2, 1fr); gap: $sp-3; }
+}
+
+.stat-card {
+  @include card-hover;
+  padding: $sp-6;
+  display: flex;
+  flex-direction: column;
+  gap: $sp-2;
+  position: relative;
+  overflow: hidden;
+
+  // Borde inferior de color
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 4px;
+    border-radius: 0 0 $r-lg $r-lg;
+  }
+
+  &__icono {
+    font-size: $fs-2xl;
+    line-height: 1;
+    margin-bottom: $sp-1;
+  }
+
+  &__numero {
+    font-family: $font-display;
+    font-size: $fs-5xl;
+    font-weight: 800;
+    line-height: 1;
+    color: $text-primary;
+
+    &--grande { font-size: $fs-3xl; }
+    &--texto  { font-size: $fs-lg; font-weight: 700; line-height: 1.25; }
+  }
+
+  &__label {
+    font-size: $fs-sm;
+    font-weight: 700;
+    color: $text-secondary;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  &__meta {
+    font-size: $fs-xs;
+    color: $text-muted;
+    line-height: 1.3;
+  }
+
+  // Variantes
+  &--total    { &::after { background: $cencosud-gris; } }
+  &--caliente {
+    background: linear-gradient(135deg, $bg-surface, $zona-caliente-bg);
+    &::after { background: $zona-caliente; }
+    .stat-card__numero { color: $zona-caliente; }
+    &:hover { border-color: rgba($zona-caliente, 0.4); box-shadow: $shadow-md, $zona-caliente-glow; }
+  }
+  &--templada {
+    background: linear-gradient(135deg, $bg-surface, $zona-templada-bg);
+    &::after { background: $zona-templada; }
+    .stat-card__numero { color: darken($zona-templada, 10%); }
+    &:hover { border-color: rgba($zona-templada, 0.4); box-shadow: $shadow-md, $zona-templada-glow; }
+  }
+  &--fria {
+    background: linear-gradient(135deg, $bg-surface, $zona-fria-bg);
+    &::after { background: $zona-fria; }
+    .stat-card__numero { color: $zona-fria; }
+    &:hover { border-color: rgba($zona-fria, 0.4); box-shadow: $shadow-md, $zona-fria-glow; }
+  }
+  &--transito {
+    &::after { background: $cencosud-verde; }
+    .stat-card__numero { color: $cencosud-verde; }
+    &:hover { border-color: rgba($cencosud-verde, 0.4); box-shadow: $shadow-md, 0 0 20px rgba($cencosud-verde, 0.25); }
+  }
+  &--destacada {
+    &::after { background: $cencosud-rojo; }
+    &:hover { border-color: rgba($cencosud-rojo, 0.4); }
+  }
+
+  @include mobile { padding: $sp-4; &__numero { font-size: $fs-4xl; } }
+}
+
+// ── RANKING ───────────────────────────────────────────────────────────────────
+.ranking {
+  margin-bottom: $sp-16;
+}
+
+.ranking-lista {
+  display: flex;
+  flex-direction: column;
+  gap: $sp-4;
+}
+
+.ranking-card {
+  @include card;
+  display: flex;
+  align-items: flex-start;
+  gap: $sp-5;
+  padding: $sp-5 $sp-6;
+  border-left: 5px solid;
+  transition: box-shadow $t-normal, transform $t-normal;
+
+  &:hover { box-shadow: $shadow-md; transform: translateX(2px); }
+
+  &--caliente { border-left-color: $zona-caliente; }
+  &--templada { border-left-color: $zona-templada; }
+  &--fria     { border-left-color: $zona-fria; }
+
+  &__pos {
+    font-family: $font-display;
+    font-size: $fs-3xl;
+    font-weight: 800;
+    color: $cencosud-gris-med;
+    line-height: 1;
+    flex-shrink: 0;
+    width: 52px;
+    text-align: right;
+  }
+
+  &__info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: $sp-2;
+
+    header { display: flex; flex-direction: column; gap: $sp-1; }
+  }
+
+  &__id {
+    font-size: $fs-xs;
+    font-weight: 700;
+    color: $cencosud-rojo;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  &__nombre {
+    font-size: $fs-xl;
+    font-weight: 700;
+    color: $text-primary;
+  }
+
+  &__desc {
+    font-size: $fs-sm;
+    color: $text-muted;
+    line-height: 1.4;
+  }
+
+  &__barra-wrap {
+    height: 6px;
+    background: $cencosud-gris-claro;
+    border-radius: $r-pill;
+    overflow: hidden;
+    margin-top: $sp-2;
+  }
+
+  &__barra {
+    height: 100%;
+    width: var(--pct, 0%);
+    border-radius: $r-pill;
+    transition: width 0.8s ease;
+    &--caliente { background: linear-gradient(90deg, #F97316, $zona-caliente); }
+    &--templada { background: linear-gradient(90deg, #FDE68A, $zona-templada); }
+    &--fria     { background: linear-gradient(90deg, #BFDBFE, $zona-fria); }
+  }
+
+  &__meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: $sp-2;
+    flex-shrink: 0;
+    min-width: 90px;
+  }
+
+  &__transitos {
+    font-family: $font-display;
+    font-size: $fs-3xl;
+    font-weight: 800;
+    color: $text-primary;
+    line-height: 1;
+  }
+
+  &__unidad {
+    font-size: $fs-xs;
+    color: $text-muted;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  @include mobile {
+    flex-wrap: wrap;
+    gap: $sp-3;
+    padding: $sp-4;
+    &__meta { flex-direction: row; align-items: center; width: 100%; justify-content: space-between; }
+    &__pos  { width: auto; }
+  }
+}
+
+// Badges de zona
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: $sp-1;
+  padding: 2px $sp-3;
+  border-radius: $r-pill;
+  font-size: $fs-xs;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+
+  &--caliente { @include badge-calor($zona-caliente); }
+  &--templada { @include badge-calor($zona-templada); }
+  &--fria     { @include badge-calor($zona-fria); }
+}
+
+// ── ALERTAS — ZONAS FRÍAS ─────────────────────────────────────────────────────
+.alertas {
+  margin-bottom: $sp-16;
+}
+
+.alertas-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: $sp-5;
+
+  @include mobile { grid-template-columns: 1fr; gap: $sp-4; }
+}
+
+.alerta-card {
+  @include card;
+  padding: $sp-5;
+  border-left: 4px solid $zona-fria;
+  background: $zona-fria-bg;
+  border-top: 1px solid rgba($zona-fria, 0.2);
+
+  &__header {
+    @include flex-between;
+    flex-wrap: wrap;
+    gap: $sp-2;
+    margin-bottom: $sp-3;
+  }
+
+  &__id {
+    font-size: $fs-xs;
+    font-weight: 700;
+    color: $zona-fria;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  &__nombre {
+    font-size: $fs-md;
+    font-weight: 700;
+    color: $text-primary;
+    flex: 1;
+    margin: 0 $sp-3;
+  }
+
+  &__transitos {
+    font-size: $fs-sm;
+    color: $text-muted;
+    margin-bottom: $sp-3;
+    strong { color: $zona-fria; font-size: $fs-xl; font-family: $font-display; font-weight: 800; }
+  }
+
+  &__recomendacion {
+    font-size: $fs-sm;
+    color: $text-secondary;
+    line-height: 1.5;
+    border-top: 1px solid rgba($zona-fria, 0.2);
+    padding-top: $sp-3;
+    font-style: italic;
+  }
+}
+
+// ── PROPÓSITO DEL SISTEMA ─────────────────────────────────────────────────────
+.proposito {
+  margin-bottom: $sp-8;
+}
+
+.proposito-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: $sp-6;
+
+  @include tablet { grid-template-columns: repeat(3, 1fr); gap: $sp-4; }
+  @include mobile { grid-template-columns: 1fr; gap: $sp-4; }
+}
+
+.prop-card {
+  @include card;
+  padding: $sp-6;
+  position: relative;
+  padding-top: $sp-8;
+
+  &__num {
+    position: absolute;
+    top: $sp-4;
+    right: $sp-5;
+    font-family: $font-display;
+    font-size: $fs-4xl;
+    font-weight: 800;
+    color: rgba($cencosud-rojo, 0.08);
+    line-height: 1;
+    user-select: none;
+  }
+
+  &__titulo {
+    font-size: $fs-lg;
+    font-weight: 700;
+    color: $text-primary;
+    margin-bottom: $sp-3;
+  }
+
+  &__texto {
+    font-size: $fs-sm;
+    color: $text-muted;
+    line-height: 1.65;
+  }
+}
