@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import { ZONAS } from '../../data/zonas.js'
 import './ZonasPage.scss'
 
 // página de gestión de zonas
@@ -7,21 +6,45 @@ import './ZonasPage.scss'
 // en el avance 2 acá se podrá editar el nombre/descripción de cada zona
 
 export default function ZonasPage() {
-  const [filtroTipo, setFiltroTipo]     = useState('todas')
+  const [filtroTipo, setFiltroTipo] = useState('todas')
   const [filtroSector, setFiltroSector] = useState('todos')
-  const [busqueda, setBusqueda]         = useState('')
+  const [busqueda, setBusqueda] = useState('')
+
+  // NUEVO: Estado para guardar los datos reales
+  const [zonas, setZonas] = useState([])
 
   useEffect(() => {
     document.title = 'Gestión de Zonas · VCM Cencosud'
+
+    fetch('http://127.0.0.1:8000/api/zonas/')
+      .then(respuesta => respuesta.json())
+      .then(datosDjango => {
+        // TRADUCTOR: Transformamos los datos de Django al molde de React
+        const datosAdaptados = datosDjango.map(item => ({
+          id: item.id_zona,             // Emparejamos id_zona con id
+          nombre: item.nombre,          // Este es igual en ambos lados
+          descripcion: 'Cargado desde base de datos', // Valor por defecto
+          sector: 'A',                  // Valor por defecto para no romper el filtro
+          tipo: 'templada',             // Valor por defecto (caliente, templada, fria)
+          transitos: 0,                 // Valor inicial
+          capacidad_max: 100,
+          tiempo_prom_min: 0,
+          recomendacion: 'Monitorear'
+        }))
+
+        setZonas(datosAdaptados) // Guardamos los datos ya traducidos
+      })
+      .catch(error => console.error("Error al cargar la API:", error))
+
     return () => { document.title = 'VCM Cencosud · Mapa de Calor' }
   }, [])
 
   // aplica los filtros seleccionados
-  const zonasFiltradas = ZONAS.filter(z => {
-    const matchTipo   = filtroTipo   === 'todas'  || z.tipo   === filtroTipo
-    const matchSector = filtroSector === 'todos'  || z.sector === filtroSector
+  const zonasFiltradas = zonas.filter(z => {
+    const matchTipo = filtroTipo === 'todas' || z.tipo === filtroTipo
+    const matchSector = filtroSector === 'todos' || z.sector === filtroSector
     const matchSearch = z.nombre.toLowerCase().includes(busqueda.toLowerCase()) ||
-                        z.id.toLowerCase().includes(busqueda.toLowerCase())
+      z.id.toLowerCase().includes(busqueda.toLowerCase())
     return matchTipo && matchSector && matchSearch
   })
 
@@ -39,7 +62,7 @@ export default function ZonasPage() {
         </div>
         <div className="page-header__meta">
           <span className="meta-badge">
-            {ZONAS.length} zonas en total
+            {zonas.length} zonas en total
           </span>
           <span className="meta-badge">Jumbo Providencia</span>
         </div>
@@ -87,7 +110,7 @@ export default function ZonasPage() {
 
         {/* contador de resultados */}
         <p className="zonas-filtros__resultado" aria-live="polite">
-          Mostrando {zonasFiltradas.length} de {ZONAS.length} zonas
+          Mostrando {zonasFiltradas.length} de {zonas.length} zonas
         </p>
       </div>
 
@@ -167,7 +190,7 @@ export default function ZonasPage() {
         <h2 className="seccion-titulo" id="resumen-h2">Resumen por Sector</h2>
         <div className="zonas-resumen-grid">
           {sectores.map(s => {
-            const zonasDelSector = ZONAS.filter(z => z.sector === s)
+            const zonasDelSector = zonas.filter(z => z.sector === s)
             const totalTransitos = zonasDelSector.reduce((acc, z) => acc + z.transitos, 0)
             const tipoMasFrecuente = zonasDelSector.sort((a, b) => b.transitos - a.transitos)[0]?.tipo
             return (
