@@ -90,3 +90,30 @@ $zona-caliente: #E3000F;  // Rojo Cencosud — alto tránsito
 $zona-templada: #F59E0B;  // Ámbar — tránsito medio
 $zona-fria:     #3B82F6;  // Azul — bajo tránsito ("invisible")
 ```
+
+# VCM Cencosud - Frontend (Mapa de Calor) 
+
+Interfaz de usuario para el sistema de visualización de métricas de tráfico en las sucursales de Cencosud. Desarrollado con React y Vite, este frontend consume datos dinámicos desde nuestra API REST en Django para renderizar los mapas de calor y la tabla de gestión de zonas.
+
+## Tecnologías Utilizadas
+* **React** (Hooks: useState, useEffect)
+* **Vite** (Build tool)
+* **Sass** (Estilos y arquitectura CSS)
+* **Fetch API** (Consumo de datos del backend)
+
+## Guía de Instalación y Ejecución
+
+**Importante:** Antes de levantar este frontend, asegúrate de tener el servidor Backend de Django corriendo en el puerto `8000` para que la conexión de datos funcione correctamente.
+
+### 1. Clonar el repositorio e ingresar a la carpeta
+git clone <URL_DEL_REPOSITORIO>
+cd solemne2_Aplicaciones
+
+### 2. instalar dependencias de Node en terminal
+npm install
+
+### 3. Levantar el servidor de desarrollo 
+npm run dev
+
+### 4. Arquitectura de integracion 
+En esta fase del proyecto (Solemne 3), la vista principal de ZonasPage.jsx ha sido refactorizada para abandonar los datos estaticos (mock data) e implementar una conexion en tiempo real con la base de datos a traves de peticiones HTTP, utilizando un adaptador de datos para mantener la compatibilidad con los componentes visuales existentes.
