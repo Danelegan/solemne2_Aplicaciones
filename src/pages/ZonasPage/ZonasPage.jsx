@@ -20,17 +20,36 @@ export default function ZonasPage() {
       .then(respuesta => respuesta.json())
       .then(datosDjango => {
         // TRADUCTOR: Transformamos los datos de Django al molde de React
-        const datosAdaptados = datosDjango.map(item => ({
-          id: item.id_zona,             // Emparejamos id_zona con id
-          nombre: item.nombre,          // Este es igual en ambos lados
-          descripcion: 'Cargado desde base de datos', // Valor por defecto
-          sector: 'A',                  // Valor por defecto para no romper el filtro
-          tipo: 'templada',             // Valor por defecto (caliente, templada, fria)
-          transitos: 0,                 // Valor inicial
-          capacidad_max: 100,
-          tiempo_prom_min: 0,
-          recomendacion: 'Monitorear'
-        }))
+        // TRADUCTOR: Transformamos los datos de Django al molde de React
+        const datosAdaptados = datosDjango.map(item => {
+          // Valores por defecto
+          let transitosFicticios = 150;
+          let tipoFicticio = 'fria';
+          let sectorFicticio = 'A';
+
+          // Asignamos datos realistas según el ID de la zona que viene de Django
+          if (item.id_zona === 'Z-01') {
+            transitosFicticios = 850; tipoFicticio = 'caliente'; sectorFicticio = 'A';
+          } else if (item.id_zona === 'Z-02') {
+            transitosFicticios = 420; tipoFicticio = 'templada'; sectorFicticio = 'B';
+          } else if (item.id_zona === 'Z-03') {
+            transitosFicticios = 120; tipoFicticio = 'fria'; sectorFicticio = 'C';
+          } else if (item.id_zona === 'Z-04') {
+            transitosFicticios = 750; tipoFicticio = 'caliente'; sectorFicticio = 'D';
+          }
+
+          return {
+            id: item.id_zona,
+            nombre: item.nombre,
+            descripcion: 'Monitoreo activo',
+            sector: sectorFicticio,
+            tipo: tipoFicticio,
+            transitos: transitosFicticios,
+            capacidad_max: 1000,
+            tiempo_prom_min: Math.floor(Math.random() * 20) + 5, // Tiempo aleatorio entre 5 y 25 min
+            recomendacion: tipoFicticio === 'caliente' ? 'Despejar pasillo' : 'Monitorear flujo'
+          }
+        })
 
         setZonas(datosAdaptados) // Guardamos los datos ya traducidos
       })
