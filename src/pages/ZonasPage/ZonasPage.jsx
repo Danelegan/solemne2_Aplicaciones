@@ -20,14 +20,13 @@ export default function ZonasPage() {
       .then(respuesta => respuesta.json())
       .then(datosDjango => {
         // TRADUCTOR: Transformamos los datos de Django al molde de React
-        // TRADUCTOR: Transformamos los datos de Django al molde de React
         const datosAdaptados = datosDjango.map(item => {
-          // Valores por defecto
+          // valores por defecto
           let transitosFicticios = 150;
           let tipoFicticio = 'fria';
           let sectorFicticio = 'A';
 
-          // Asignamos datos realistas según el ID de la zona que viene de Django
+          // Se le asigno datos realistas segun el id de la zona 
           if (item.id_zona === 'Z-01') {
             transitosFicticios = 850; tipoFicticio = 'caliente'; sectorFicticio = 'A';
           } else if (item.id_zona === 'Z-02') {
@@ -46,12 +45,12 @@ export default function ZonasPage() {
             tipo: tipoFicticio,
             transitos: transitosFicticios,
             capacidad_max: 1000,
-            tiempo_prom_min: Math.floor(Math.random() * 20) + 5, // Tiempo aleatorio entre 5 y 25 min
+            tiempo_prom_min: Math.floor(Math.random() * 20) + 5,
             recomendacion: tipoFicticio === 'caliente' ? 'Despejar pasillo' : 'Monitorear flujo'
           }
         })
 
-        setZonas(datosAdaptados) // Guardamos los datos ya traducidos
+        setZonas(datosAdaptados)
       })
       .catch(error => console.error("Error al cargar la API:", error))
 
